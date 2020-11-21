@@ -2,3 +2,6 @@ text.txt
 main.c
 a.out
 42TESTERS-GNL
+.DS_Store
+a.out.dSYM/
+get_next_line.h.gch

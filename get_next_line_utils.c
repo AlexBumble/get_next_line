@@ -83,7 +83,8 @@ char	*strjoin_from(int fd, gnl_s *res)
 	{
 		buf[res->read_r] = '\0';
 		str = ft_strjoin(res->str, buf);
-		free((void *)buf);
 	}
+	if (buf)
+		free((void *)buf);
 	return str;
 }
