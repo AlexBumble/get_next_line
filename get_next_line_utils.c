@@ -1,6 +1,6 @@
 #include "get_next_line.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+static	char	*ft_strjoin(char const *s1, char const *s2)
 {
 	size_t	len_s1;
 	size_t	len_s2;
@@ -23,7 +23,17 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (res);
 }
 
-size_t	ft_strlen(const char *s)
+int				find_end_line(char *str, int index)
+{
+	if (str[index] && str[index] == '\n')
+		return index;
+	else if (str[index] && str[index] != '\n')
+		return find_end_line(str, index + 1);
+	else
+		return (-1);
+}
+
+size_t			ft_strlen(const char *s)
 {
 	size_t	i;
 
@@ -33,25 +43,7 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*ft_strchr(const char *s, int c)
-{
-	int		i;
-	char	c_chr;
-
-	i = 0;
-	c_chr = (char)c;
-	while (s[i])
-	{
-		if (s[i] == c_chr)
-			return ((char *)s + i);
-		i++;
-	}
-	if (c_chr == '\0' && s[i] == '\0')
-		return ((char *)s + i);
-	return (NULL);
-}
-
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+size_t			ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
 	size_t	i;
 
@@ -72,19 +64,21 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	return (i);
 }
 
-char	*strjoin_from(int fd, gnl_s *res)
+char			*strjoin_fd(int fd, gnl_s *res)
 {
 	char	*buf;
 	char	*str;
 
 	str = NULL;
 	buf = malloc(BUFFER_SIZE + 1);
-	if (buf && (res->read_r = read(fd, buf, BUFFER_SIZE)))
-	{
-		buf[res->read_r] = '\0';
-		str = ft_strjoin(res->str, buf);
-	}
 	if (buf)
-		free((void *)buf);
-	return str;
+	{
+		res->read_r = read(fd, buf, BUFFER_SIZE);
+		if (res->read_r > 0)
+		{
+			buf[res->read_r] = '\0';
+			str = ft_strjoin(res->str, buf);
+		}
+	}
+	return (str);
 }
