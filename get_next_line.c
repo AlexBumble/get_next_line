@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jbane <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/12/02 19:20:39 by jbane             #+#    #+#             */
+/*   Updated: 2020/12/02 19:20:47 by jbane            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
-static	void	update_line(gnl_s *res, char **line, size_t size)
+static	void	update_line(t_gnl *res, char **line, size_t size)
 {
 	char	*buf;
 	size_t	tail_l;
@@ -21,7 +33,7 @@ static	void	update_line(gnl_s *res, char **line, size_t size)
 	}
 }
 
-static	int		find_line(int fd, gnl_s *res, char **line)
+static	int		find_line(int fd, t_gnl *res, char **line)
 {
 	res->break_i = find_end_line(res->str, 0);
 	if (res->break_i >= 0 || (res->read_r > 0 && res->read_r < BUFFER_SIZE))
@@ -30,11 +42,11 @@ static	int		find_line(int fd, gnl_s *res, char **line)
 		if (res->read_r > 0 && res->read_r < BUFFER_SIZE)
 		{
 			if (res->break_i == -1)
-				return 0;
+				return (0);
 			res->break_i = find_end_line(res->str, 0);
 			return (int)ft_strlen(res->str) >= res->break_i + 1 ? 1 : 0;
 		}
-		return 1;
+		return (1);
 	}
 	else if (res->read_r > 0)
 	{
@@ -50,7 +62,7 @@ static	int		find_line(int fd, gnl_s *res, char **line)
 	return (-1);
 }
 
-static	int		gnl_operation(int fd, gnl_s *res, char **line)
+static	int		gnl_operation(int fd, t_gnl *res, char **line)
 {
 	if (!res->str)
 	{
@@ -64,27 +76,27 @@ static	int		gnl_operation(int fd, gnl_s *res, char **line)
 				return (gnl_operation(fd, res, line));
 			}
 		}
-		return -1;
+		return (-1);
 	}
 	return (find_line(fd, res, line));
 }
 
-static	int		current_buf(gnl_s **arr, int fd)
+static	int		current_buf(t_gnl **arr, int fd)
 {
 	int		i;
-	gnl_s	*buf;
+	t_gnl	*buf;
 
 	i = 0;
 	buf = NULL;
 	while (arr[i])
 	{
 		if (arr[i] && (arr[i]->flag == 1) && (arr[i]->fd == fd))
-			break;
+			break ;
 		i++;
 	}
 	if (!arr[i])
 	{
-		buf = malloc(sizeof(gnl_s));
+		buf = malloc(sizeof(t_gnl));
 		if (buf)
 		{
 			buf->str = NULL;
@@ -93,14 +105,14 @@ static	int		current_buf(gnl_s **arr, int fd)
 			arr[i] = buf;
 		}
 	}
-	return i;
+	return (i);
 }
 
 int				get_next_line(int fd, char **line)
 {
 	int				gnl_res;
 	int				last_res_i;
-	static gnl_s	*res[100];
+	static t_gnl	*res[100];
 
 	if (BUFFER_SIZE > 0 && line && fd < 99)
 	{
@@ -115,7 +127,7 @@ int				get_next_line(int fd, char **line)
 				free(res[last_res_i]);
 				res[last_res_i] = NULL;
 			}
-			return gnl_res;
+			return (gnl_res);
 		}
 	}
 	return (-1);

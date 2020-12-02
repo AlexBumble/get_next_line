@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jbane <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/12/02 19:21:19 by jbane             #+#    #+#             */
+/*   Updated: 2020/12/02 19:21:21 by jbane            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
 static	char	*ft_strjoin(char const *s1, char const *s2)
@@ -27,9 +39,9 @@ static	char	*ft_strjoin(char const *s1, char const *s2)
 int				find_end_line(char *str, int index)
 {
 	if (str[index] && str[index] == '\n')
-		return index;
+		return (index);
 	else if (str[index] && str[index] != '\n')
-		return find_end_line(str, index + 1);
+		return (find_end_line(str, index + 1));
 	else
 		return (-1);
 }
@@ -65,7 +77,7 @@ size_t			ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	return (i);
 }
 
-char			*strjoin_fd(int fd, gnl_s *res)
+char			*strjoin_fd(int fd, t_gnl *res)
 {
 	char	*buf;
 	char	*str;
