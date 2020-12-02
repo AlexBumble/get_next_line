@@ -1,4 +1,4 @@
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static	void	update_line(gnl_s *res, char **line, size_t size)
 {
