@@ -28,7 +28,7 @@ typedef struct	s_gnl
 
 int				get_next_line(int fd, char **line);
 int				find_end_line(char *str, int i);
-char			*strjoin_fd(int fd, s_gnl *res);
+char			*strjoin_fd(int fd, t_gnl *res);
 size_t			ft_strlen(const char *s);
 size_t			ft_strlcpy(char *dst, const char *src, size_t dstsize);
 
