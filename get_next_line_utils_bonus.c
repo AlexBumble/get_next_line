@@ -92,7 +92,9 @@ char			*strjoin_fd(int fd, t_gnl *res)
 		{
 			buf[res->read_r] = '\0';
 			str = ft_strjoin(res->str, buf);
+			free(res->str);
 		}
+		free(buf);
 	}
 	return (str);
 }

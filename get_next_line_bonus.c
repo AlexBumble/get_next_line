@@ -14,21 +14,17 @@
 
 static	void	update_line(t_gnl *res, char **line, size_t size)
 {
-	char	*buf;
 	size_t	tail_l;
 
 	tail_l = ft_strlen(res->str) - (int)size + 1;
-	buf = NULL;
-	buf = malloc(tail_l);
 	*line = NULL;
 	*line = malloc((size == 0 ? tail_l : size));
-	if (line && buf)
+	if (line)
 	{
 		ft_strlcpy(*line, res->str, (size == 0 ? tail_l : size));
 		if (tail_l > 0)
 		{
-			buf = res->str + size;
-			ft_strlcpy(res->str, buf, tail_l + 1);
+			ft_strlcpy(res->str, res->str + size, tail_l + 1);
 		}
 	}
 }
@@ -83,18 +79,10 @@ static	int		gnl_operation(int fd, t_gnl *res, char **line)
 
 static	int		current_buf(t_gnl **arr, int fd)
 {
-	int		i;
 	t_gnl	*buf;
 
-	i = 0;
 	buf = NULL;
-	while (arr[i])
-	{
-		if (arr[i] && (arr[i]->flag == 1) && (arr[i]->fd == fd))
-			break ;
-		i++;
-	}
-	if (!arr[i])
+	if (!arr[fd])
 	{
 		buf = malloc(sizeof(t_gnl));
 		if (buf)
@@ -102,10 +90,10 @@ static	int		current_buf(t_gnl **arr, int fd)
 			buf->str = NULL;
 			buf->flag = 1;
 			buf->fd = fd;
-			arr[i] = buf;
+			arr[fd] = buf;
 		}
 	}
-	return (i);
+	return (fd);
 }
 
 int				get_next_line(int fd, char **line)
